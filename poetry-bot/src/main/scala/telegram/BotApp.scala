@@ -4,7 +4,8 @@ import com.typesafe.scalalogging.LazyLogging
 import org.telegram.telegrambots.exceptions.TelegramApiRequestException
 import org.telegram.telegrambots.{ApiContextInitializer, TelegramBotsApi}
 import telegram.bots.PoetryBot
-import telegram.settings.MainConfig.{botUserName}
+import telegram.exporthhru.VacanciesExport
+import telegram.settings.MainConfig.botUserName
 
 object BotApp extends App with LazyLogging {
   // READ https://github.com/rubenlagus/TelegramBots/wiki/Getting-Started
@@ -23,4 +24,8 @@ object BotApp extends App with LazyLogging {
   val hhru = HhRu
   val response = hhru.sendRequest()
   logger.info(s"HhRu RESPONSE: " + response)
+
+  val export = VacanciesExport
+  export.calcNQueensCombinations(8)
+  export.update(response)
 }
