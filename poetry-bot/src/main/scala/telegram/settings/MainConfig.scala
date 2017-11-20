@@ -3,7 +3,7 @@ package telegram.settings
 object MainConfig {
   // Telegram
   val botUserName: String = "MusicNovaBot"
-  val botToken: String = "477055081:AAFexBL5sG800f88oBp2vDkEPms5cmMFSAU"
+  val botToken: String = "477055081:AAFexBL5sG8O0f88oBp2vDkEPms5cmMFSAU"
 
   val startHeader = """
   <b>Привет дружище!</b>

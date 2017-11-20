@@ -8,7 +8,7 @@ import telegram.settings.MainConfig.{botUserName}
 
 object BotApp extends App with LazyLogging {
   // READ https://github.com/rubenlagus/TelegramBots/wiki/Getting-Started
-
+/*
   ApiContextInitializer.init()
   val botsApi = new TelegramBotsApi
 
@@ -19,4 +19,8 @@ object BotApp extends App with LazyLogging {
       System.exit(1)
   }
   logger.info(s"Registration of $botUserName has been success")
+*/
+  val hhru = HhRu
+  val response = hhru.sendRequest()
+  logger.info(s"HhRu RESPONSE: " + response)
 }
