@@ -25,7 +25,8 @@ lazy val dependencies = Seq(
   pack15,
   pack16,
   pack17,
-  pack18
+  pack18,
+  pack19
 )
 
 lazy val root = (project in file("."))

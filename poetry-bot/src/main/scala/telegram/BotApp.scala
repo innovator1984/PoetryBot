@@ -10,12 +10,12 @@ import telegram.settings.MainConfig.botUserName
 object BotApp extends App with LazyLogging {
 
   val hhru = HhRu
-  val response = hhru.sendRequest()
-  logger.info(s"HhRu RESPONSE: " + response)
+  val responses = hhru.sendRequest()
+  logger.info(s"HhRu RESPONSES: " + responses.length)
 
   val export = VacanciesExport
   export.calcNQueensCombinations(8)
-  export.update(Seq(response))
+  export.update(responses)
 
   // READ https://github.com/rubenlagus/TelegramBots/wiki/Getting-Started
   /*
