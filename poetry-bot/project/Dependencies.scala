@@ -12,6 +12,8 @@ object Dependencies {
   lazy val telegramV      = "3.2"
   lazy val gsonV          = "2.8.2"
   lazy val slickV         = "3.2.1"
+  lazy val hikariV        = "3.2.1"
+  lazy val postgreV       = "9.4-1204-jdbc4"
 
   lazy val pack1       = "org.typelevel"     %% "cats-core"       % catsV
   lazy val pack2       = "com.iheart"        %% "ficus"           % ficusV
@@ -32,6 +34,8 @@ object Dependencies {
 
   lazy val pack15       = "com.google.code.gson"     % "gson"       % gsonV
   lazy val pack16       = "com.typesafe.slick" %% "slick" % slickV
+  lazy val pack17       = "com.typesafe.slick" %% "slick-hikaricp" % hikariV
+  lazy val pack18       = "org.postgresql" % "postgresql" % postgreV
 
   lazy val repos = Seq(Resolver.jcenterRepo)
 

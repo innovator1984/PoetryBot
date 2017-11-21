@@ -8,24 +8,26 @@ import telegram.exporthhru.VacanciesExport
 import telegram.settings.MainConfig.botUserName
 
 object BotApp extends App with LazyLogging {
-  // READ https://github.com/rubenlagus/TelegramBots/wiki/Getting-Started
-/*
-  ApiContextInitializer.init()
-  val botsApi = new TelegramBotsApi
 
-  try botsApi.registerBot(new PoetryBot)
-  catch {
-    case ex: TelegramApiRequestException =>
-      logger.error(s"Registration of $botUserName has been failed", ex)
-      System.exit(1)
-  }
-  logger.info(s"Registration of $botUserName has been success")
-*/
   val hhru = HhRu
   val response = hhru.sendRequest()
   logger.info(s"HhRu RESPONSE: " + response)
 
   val export = VacanciesExport
   export.calcNQueensCombinations(8)
-  export.update(response)
+  export.update(Seq(response))
+
+  // READ https://github.com/rubenlagus/TelegramBots/wiki/Getting-Started
+  /*
+    ApiContextInitializer.init()
+    val botsApi = new TelegramBotsApi
+
+    try botsApi.registerBot(new PoetryBot)
+    catch {
+      case ex: TelegramApiRequestException =>
+        logger.error(s"Registration of $botUserName has been failed", ex)
+        System.exit(1)
+    }
+    logger.info(s"Registration of $botUserName has been success")
+  */
 }

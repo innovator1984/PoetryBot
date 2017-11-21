@@ -64,6 +64,32 @@ class PoetryBotCommandHandler extends CommandHandler with LazyLogging {
 /*FIXME*/          one.map(_.mkString("\n"))
 /*FIXME*/            .map(text => new SendMessage(chatId, text))
 /*FIXME*/        }
+/*FIXME*/      case "/quests" =>
+/*FIXME*/        val lists = new DerbyDriver().requestLists()
+/*FIXME*/        val text = (listsHeader :: lists).mkString("\n")
+/*FIXME*/        logger.info(s"$botUserName has sent contact information to user with userName:$userName (chatId:$chatId)")
+/*FIXME*/        new SendMessage(chatId, text).enableHtml(true) :: Nil
+/*FIXME*/      case "/ratings" =>
+/*FIXME*/        val one = new DerbyDriver().requestNewOne
+/*FIXME*/        if (one.isEmpty) new SendMessage(chatId, newNotAvailable) :: Nil
+/*FIXME*/        else {
+/*FIXME*/          logger.info(s"$botUserName has sent price list to user with userName:$userName (chatId:$chatId)")
+/*FIXME*/          one.map(_.mkString("\n"))
+/*FIXME*/            .map(text => new SendMessage(chatId, text))
+/*FIXME*/        }
+/*FIXME*/      case "/vacancies" =>
+/*FIXME*/        val lists = new DerbyDriver().requestLists()
+/*FIXME*/        val text = (listsHeader :: lists).mkString("\n")
+/*FIXME*/        logger.info(s"$botUserName has sent contact information to user with userName:$userName (chatId:$chatId)")
+/*FIXME*/        new SendMessage(chatId, text).enableHtml(true) :: Nil
+/*FIXME*/      case "/trends" =>
+/*FIXME*/        val one = new DerbyDriver().requestNewOne
+/*FIXME*/        if (one.isEmpty) new SendMessage(chatId, newNotAvailable) :: Nil
+/*FIXME*/        else {
+/*FIXME*/          logger.info(s"$botUserName has sent price list to user with userName:$userName (chatId:$chatId)")
+/*FIXME*/          one.map(_.mkString("\n"))
+/*FIXME*/            .map(text => new SendMessage(chatId, text))
+/*FIXME*/        }
       case _ =>
         new SendMessage(chatId, badCommand) :: Nil
     }
