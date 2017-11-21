@@ -14,5 +14,7 @@ class PoetryBot extends TelegramLongPollingBot {
   private val cmdHandler = new PoetryBotCommandHandler
   override def onUpdateReceived(update: Update) = {
     cmdHandler.handle(update.getMessage).foreach(execute[Message, BotApiMethod[Message]])
+
+    // TODO: save state "COMMAND printed" to DataBase table states and reset it on "/start" to START
   }
 }

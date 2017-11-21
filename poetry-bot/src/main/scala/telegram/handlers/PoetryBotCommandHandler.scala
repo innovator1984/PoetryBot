@@ -1,113 +1,145 @@
 package telegram.handlers
 
-import java.lang
-
 import telegram.settings.MainConfig.{badCommand, botUserName, commands, commandsHeader}
 import telegram.settings.MainConfig.{listsHeader, newNotAvailable, startHeader}
 import com.typesafe.scalalogging.LazyLogging
 import org.telegram.telegrambots.api.methods.send.SendMessage
 import org.telegram.telegrambots.api.objects.Message
-import telegram.database.DerbyDriver
+import telegram.database.{AccountsExport, DummyDriver}
 
 trait CommandHandler {
   def handle(msgWithCmd: Message): Seq[SendMessage]
 }
 
 class PoetryBotCommandHandler extends CommandHandler with LazyLogging {
-  private def handleStart(chatId: lang.Long, userName: String, userFirstName: String, userLastName: String) = {
+  def handleStart(chatId: Long, userName: String, userFirstName: String, userLastName: String) = {
+    val accounts = AccountsExport
+    accounts.update(Seq(userName))
+    val acc = accounts.search(Seq(userName))
+
     val text = (startHeader :: commandsHeader :: commands).mkString("\n")
     logger.info(s"User: $userFirstName $userLastName with userName:$userName has been connected" +
       " to $botUserName (chatId:$chatId)")
-    new SendMessage(chatId, text).enableHtml(true) :: Nil
+    new SendMessage(chatId, "CARD" + acc + " " + text).enableHtml(true) :: Nil
   }
 
-  private def handleAuthors(chatId: lang.Long, userName: String) = {
-    val lists = new DerbyDriver().requestLists()
+  def handleAuthors(chatId: Long, userName: String) = {
+    val accounts = AccountsExport
+    val acc = accounts.search(Seq(userName))
+
+    val lists = new DummyDriver().requestLists()
     val text = (listsHeader :: lists).mkString("\n")
     logger.info(s"$botUserName has sent contact information to user with userName:$userName (chatId:$chatId)")
-    new SendMessage(chatId, text).enableHtml(true) :: Nil
+    new SendMessage(chatId, "CARD" + acc + " " + text).enableHtml(true) :: Nil
   }
 
-  private def handleBest(chatId: lang.Long, userName: String) = {
-    val one = new DerbyDriver().requestNewOne
+  def handleBest(chatId: Long, userName: String) = {
+    val accounts = AccountsExport
+    val acc = accounts.search(Seq(userName))
+
+    val one = new DummyDriver().requestNewOne
     if (one.isEmpty) {
       new SendMessage(chatId, newNotAvailable) :: Nil
     } else {
       logger.info(s"$botUserName has sent price list to user with userName:$userName (chatId:$chatId)")
       one.map(_.mkString("\n"))
-        .map(text => new SendMessage(chatId, text))
+        .map(text => new SendMessage(chatId, "CARD" + acc + " " + text))
     }
   }
 
-  private def handleListall(chatId: lang.Long, userName: String) = {
-    val lists = new DerbyDriver().requestLists()
+  def handleListall(chatId: Long, userName: String) = {
+    val accounts = AccountsExport
+    val acc = accounts.search(Seq(userName))
+
+    val lists = new DummyDriver().requestLists()
     val text = (listsHeader :: lists).mkString("\n")
     logger.info(s"$botUserName has sent contact information to user with userName:$userName (chatId:$chatId)")
-    new SendMessage(chatId, text).enableHtml(true) :: Nil
+    new SendMessage(chatId, "CARD" + acc + " " + text).enableHtml(true) :: Nil
   }
 
-  private def handleNewone(chatId: lang.Long, userName: String) = {
-    val one = new DerbyDriver().requestNewOne
+  def handleNewone(chatId: Long, userName: String) = {
+    val accounts = AccountsExport
+    val acc = accounts.search(Seq(userName))
+
+    val one = new DummyDriver().requestNewOne
     if (one.isEmpty) {
       new SendMessage(chatId, newNotAvailable) :: Nil
     } else {
       logger.info(s"$botUserName has sent price list to user with userName:$userName (chatId:$chatId)")
       one.map(_.mkString("\n"))
-        .map(text => new SendMessage(chatId, text))
+        .map(text => new SendMessage(chatId, "CARD" + acc + " " + text))
     }
   }
 
-  private def handleMails(chatId: lang.Long, userName: String) = {
-    val lists = new DerbyDriver().requestLists()
+  def handleMails(chatId: Long, userName: String) = {
+    val accounts = AccountsExport
+    val acc = accounts.search(Seq(userName))
+
+    val lists = new DummyDriver().requestLists()
     val text = (listsHeader :: lists).mkString("\n")
     logger.info(s"$botUserName has sent contact information to user with userName:$userName (chatId:$chatId)")
-    new SendMessage(chatId, text).enableHtml(true) :: Nil
+    new SendMessage(chatId, "CARD" + acc + " " + text).enableHtml(true) :: Nil
   }
 
-  private def handleSettings(chatId: lang.Long, userName: String) = {
-    val one = new DerbyDriver().requestNewOne
+  def handleSettings(chatId: Long, userName: String) = {
+    val accounts = AccountsExport
+    val acc = accounts.search(Seq(userName))
+
+    val one = new DummyDriver().requestNewOne
     if (one.isEmpty) {
       new SendMessage(chatId, newNotAvailable) :: Nil
     } else {
       logger.info(s"$botUserName has sent price list to user with userName:$userName (chatId:$chatId)")
       one.map(_.mkString("\n"))
-        .map(text => new SendMessage(chatId, text))
+        .map(text => new SendMessage(chatId, "CARD" + acc + " " + text))
     }
   }
 
-  private def handleQuests(chatId: lang.Long, userName: String) = {
-    val lists = new DerbyDriver().requestLists()
+  def handleQuests(chatId: Long, userName: String) = {
+    val accounts = AccountsExport
+    val acc = accounts.search(Seq(userName))
+
+    val lists = new DummyDriver().requestLists()
     val text = (listsHeader :: lists).mkString("\n")
     logger.info(s"$botUserName has sent contact information to user with userName:$userName (chatId:$chatId)")
-    new SendMessage(chatId, text).enableHtml(true) :: Nil
+    new SendMessage(chatId, "CARD" + acc + " " + text).enableHtml(true) :: Nil
   }
 
-  private def handleRatings(chatId: lang.Long, userName: String) = {
-    val one = new DerbyDriver().requestNewOne
+  def handleRatings(chatId: Long, userName: String) = {
+    val accounts = AccountsExport
+    val acc = accounts.search(Seq(userName))
+
+    val one = new DummyDriver().requestNewOne
     if (one.isEmpty) {
       new SendMessage(chatId, newNotAvailable) :: Nil
     } else {
       logger.info(s"$botUserName has sent price list to user with userName:$userName (chatId:$chatId)")
       one.map(_.mkString("\n"))
-        .map(text => new SendMessage(chatId, text))
+        .map(text => new SendMessage(chatId, "CARD" + acc + " " + text))
     }
   }
 
-  private def handleVacancies(chatId: lang.Long, userName: String) = {
-    val lists = new DerbyDriver().requestLists()
+  def handleVacancies(chatId: Long, userName: String) = {
+    val accounts = AccountsExport
+    val acc = accounts.search(Seq(userName))
+
+    val lists = new DummyDriver().requestLists()
     val text = (listsHeader :: lists).mkString("\n")
     logger.info(s"$botUserName has sent contact information to user with userName:$userName (chatId:$chatId)")
-    new SendMessage(chatId, text).enableHtml(true) :: Nil
+    new SendMessage(chatId, "CARD" + acc + " " + text).enableHtml(true) :: Nil
   }
 
-  private def handleTrends(chatId: lang.Long, userName: String) = {
-    val one = new DerbyDriver().requestNewOne
+  def handleTrends(chatId: Long, userName: String) = {
+    val accounts = AccountsExport
+    val acc = accounts.search(Seq(userName))
+
+    val one = new DummyDriver().requestNewOne
     if (one.isEmpty) {
       new SendMessage(chatId, newNotAvailable) :: Nil
     } else {
       logger.info(s"$botUserName has sent price list to user with userName:$userName (chatId:$chatId)")
       one.map(_.mkString("\n"))
-        .map(text => new SendMessage(chatId, text))
+        .map(text => new SendMessage(chatId, "CARD" + acc + " " + text))
     }
   }
 

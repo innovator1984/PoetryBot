@@ -1,6 +1,5 @@
 package telegram.exporthhru
 
-
 import com.google.gson.Gson
 import telegram.vacancieshhru.R00t
 

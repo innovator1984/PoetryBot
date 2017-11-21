@@ -1,5 +1,7 @@
 package telegram
 
+import java.io.ByteArrayInputStream
+
 import com.google.gson.GsonBuilder
 import telegram.vacancieshhru.R00t
 
@@ -22,9 +24,13 @@ object HhRu {
     val request = MyHttp("https://api.hh.ru/vacancies" + param)
     val result = request.asString.body
 
-    println("DEBUG: " + result)
+    import java.io.ByteArrayInputStream
+    import java.io.InputStreamReader
+
+    println("DEBUG: " + result) // READ q/19277136
     val gson = new GsonBuilder().create()
-    val root = gson.fromJson(result, classOf[R00t])
+    val is = new ByteArrayInputStream( result.getBytes( "UTF-8" ) )
+    val root = gson.fromJson(new InputStreamReader(is), classOf[R00t])
     Seq(root)
   }
 
