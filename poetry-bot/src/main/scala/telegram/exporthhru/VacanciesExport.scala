@@ -60,18 +60,16 @@ object VacanciesExport {
     Await.result(db.run(DBIO.seq(actions: _*).transactionally), Duration.Inf)
   } finally db.close
 
-  def update(responses: Seq[R00t]): Unit = {
-    def readResponse(s: R00t, keyPart: String): Stream[Vacancies] = {
+  def update(responses: Map[(String, String), Seq[R00t]]): Unit = {
+    def readResponse(s: Seq[R00t], keyPart: String): Stream[Vacancies] = {
       val gson = new Gson
-      val str = gson.toJson(s)
-      println("JSON: " + str.length)
-      (0 until 1).map(_ => Vacancies(0, None, keyPart, json = str)).toStream
+      s.map(r => Vacancies(0, None, keyPart, json = gson.toJson(r))).toStream
     }
     import java.text.SimpleDateFormat
     import java.util.Calendar
     val format = new SimpleDateFormat("yyyy-MM-dd_HH:mm")
     val keyPart = format.format(Calendar.getInstance().getTime)
-    val rows = responses.toStream.flatMap(s => readResponse(s, keyPart))
+    val rows = responses.toStream.flatMap{ case(k, v) => readResponse(v, k._1 + keyPart + k._2) }
     saveVacanciesToDB(rows, TableVacancies.table)
   }
 
