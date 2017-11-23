@@ -112,7 +112,7 @@ object Main extends Serializable {
       val p = CSVWriter.open(f)
       try {
         type MyTuple = (String, String, String, String, String, String)
-        p.writeRow(List("url", "salary", "w1", "w2", "w3", "header"))
+        p.writeRow(List("URL", "SALARY", "W1", "W2", "W3", "HEADER"))
         val s: Seq[List[MyTuple]] = v.flatMap(j => {
           // val url = g.toJson(j)
           // val salary = g.toJson(j)
@@ -140,9 +140,12 @@ object Main extends Serializable {
             val header = "ITOGO"
             List((url, salary, w1, w2, w3, header))
           })
-          res.union(appendix)
+          res// .union(appendix)
         })
-        s.foreach{x => p.writeRow(x)}
+        s.foreach{(x: Seq[MyTuple]) => x.foreach(y => {
+          p.writeRow(List(y._1, y._2, y._3, y._4, y._5, y._6))
+        }
+        )}
         s.foreach{x => println(x)}
         println("Saved " + n)
       } finally {
