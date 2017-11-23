@@ -1,11 +1,5 @@
-package telegram
-
-import java.io.ByteArrayInputStream
-
 import com.google.gson.GsonBuilder
 import telegram.vacancieshhru.R00t
-
-// import sys.process._
 
 object HhRu {
   def sendRequests(): Map[(String, String), Seq[R00t]] = {
@@ -54,8 +48,7 @@ object HhRu {
     val request = MyHttp("https://api.hh.ru/vacancies" + param + extra)
     val result = request.asString.body
 
-    import java.io.ByteArrayInputStream
-    import java.io.InputStreamReader
+    import java.io.{ByteArrayInputStream, InputStreamReader}
 
     println("DEBUG: " + result) // READ q/19277136
     val gson = new GsonBuilder().create()
