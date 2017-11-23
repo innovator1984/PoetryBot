@@ -1,10 +1,6 @@
 package ideas
 
-import java.io
-
 import telegram.vacancieshhru.{Item, R00t}
-
-import scala.util.Random
 
 object Main extends Serializable {
 
@@ -67,6 +63,8 @@ object Main extends Serializable {
       val extra: String = if (zone != "_") { "&metro=" + URLEncoder.encode(zone, "UTF-8") } else ""
 
         import sys.process._
+        import scala.util.Random
+
         val to = "https://api.hh.ru/vacancies" + param + extra
         val k = scala.util.Random.nextInt() % 3
         Thread.sleep(500 * k * k)
@@ -97,6 +95,23 @@ object Main extends Serializable {
     stream.toSeq
   }
 
+  def toCp1252(line: String): String = {
+    import scala.util.{Try, Success, Failure}
+    val success = Try {
+      import java.io.{ByteArrayInputStream}
+      import java.nio.charset.{StandardCharsets, Charset}
+      val stream = new ByteArrayInputStream(line.getBytes(StandardCharsets.UTF_8.name()))
+      import java.util.Scanner
+      val scan = new Scanner(stream, "CP1252")
+      stream.close()
+      if(scan.hasNextLine) { scan.nextLine() } else ""
+    }
+    success match {
+      case(Success(v)) => v
+      case _ => ""
+    }
+  }
+
   def doOnline(): Unit = {
     val responses: Map[(String, String), Seq[R00t]] = sendRequest()
     // https://stackoverflow.com/questions/4604237/how-to-write-to-a-file-in-scala
@@ -123,13 +138,13 @@ object Main extends Serializable {
           val items: java.util.List[Item] = j.getItems
           val szItems = if (items != null) items.size() else 0
           val res: Seq[List[MyTuple]] = (0 until szItems).map(iItems => {
-            val url = items.get(iItems).getUrl
+            val url = items.get(iItems).getAlternateUrl
             val salary = g.toJson(items.get(iItems))
             val w1 = "1.0"
             val w2 = "1.0"
             val w3 = "1.0"
             val header = items.get(iItems).getName
-            List((url, salary, w1, w2, w3, header))
+            List((toCp1252(url), toCp1252(salary), toCp1252(w1), toCp1252(w2), toCp1252(w3), toCp1252(header)))
           })
           val appendix: Seq[List[MyTuple]] = (1 to 1).map(_ => {
             val url = j.getAlternateUrl
@@ -138,7 +153,7 @@ object Main extends Serializable {
             val w2 = "1.0"
             val w3 = "1.0"
             val header = "ITOGO"
-            List((url, salary, w1, w2, w3, header))
+            List((toCp1252(url), toCp1252(salary), toCp1252(w1), toCp1252(w2), toCp1252(w3), toCp1252(header)))
           })
           res// .union(appendix)
         })
